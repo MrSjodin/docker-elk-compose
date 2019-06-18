@@ -1,7 +1,10 @@
-# docker-elk-compose
-Elastic ELK Stack - Elasticsearch, Logstash, Kibana in one package. To be used by docker-compose. 
+# Elastic stack (ELK) on Docker using Docker-Compose
 
-Based on the official Docker images from Elastic[elk-stack]:
+[![Elastic Stack version 7.0.1](https://img.shields.io/badge/ELK-7.0.1-blue.svg?style=flat)
+
+[Elastic ELK Stack][elk-stack] - [Elasticsearch](https://www.elastic.co/products/elasticsearch), [Logstash](https://www.elastic.co/products/logstash), and [Kibana](https://www.elastic.co/products/kibana) in one package. To be used by [Docker Compose](https://docs.docker.com/compose/). 
+
+Based on the official Docker images from [Elastic][elk-stack]:
 
 * [Elasticsearch](https://github.com/elastic/elasticsearch-docker)
 * [Logstash](https://github.com/elastic/logstash-docker)
@@ -14,7 +17,7 @@ Based on the official Docker images from Elastic[elk-stack]:
 
 ## Quick-Start instrux
 
-By default, the services in the stack will expose the following ports:
+By default, the services in the stack will expose the following TCP ports:
 * 5000: Logstash TCP input
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
