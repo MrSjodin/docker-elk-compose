@@ -56,7 +56,7 @@ Then, you can create index from the Kibana front-end (by hitting the *Create* bu
 ```console
 $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
     -H 'Content-Type: application/json' \
-    -H 'kbn-version: 7.0.1' \
+    -H 'kbn-version: 7.4.2' \
     -u elastic:<your elastic password> \
     -d '{"attributes":{"title":"logstash-*","timeFieldName":"@timestamp"}}'
 ```
