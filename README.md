@@ -1,6 +1,6 @@
 # Elastic stack (ELK) on Docker using Docker-Compose
 
-![Elastic Stack version 7.5.0](https://img.shields.io/badge/ELK-7.5.0-blue.svg?style=flat)
+![Elastic Stack version 7.9.0](https://img.shields.io/badge/ELK-7.9.0-blue.svg?style=flat)
 
 [Elastic ELK Stack][elk-stack] - [Elasticsearch](https://www.elastic.co/products/elasticsearch), [Logstash](https://www.elastic.co/products/logstash), and [Kibana](https://www.elastic.co/products/kibana) in one package. To be used by [Docker Compose](https://docs.docker.com/compose/). 
 
@@ -56,7 +56,7 @@ Then, you can create index from the Kibana front-end (by hitting the *Create* bu
 ```console
 $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
     -H 'Content-Type: application/json' \
-    -H 'kbn-version: 7.5.0' \
+    -H 'kbn-version: 7.9.0' \
     -u elastic:<your elastic password> \
     -d '{"attributes":{"title":"logstash-*","timeFieldName":"@timestamp"}}'
 ```
