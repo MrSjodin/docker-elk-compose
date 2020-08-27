@@ -1,8 +1,9 @@
-version: '2'
+version: "3"
 
 services:
 
   elasticsearch:
+    container_name: elk-elasticsearch
     build:
       context: elasticsearch/
       args:
@@ -19,6 +20,7 @@ services:
       - elk
 
   logstash:
+    container_name: elk-logstash
     build:
       context: logstash/
       args:
@@ -37,6 +39,7 @@ services:
       - elasticsearch
 
   kibana:
+    container_name: elk-kibana
     build:
       context: kibana/
       args:
