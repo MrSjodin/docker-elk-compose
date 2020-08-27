@@ -18,7 +18,8 @@ Based on the official Docker images from [Elastic][elk-stack]:
 ## Quick-Start instrux
 
 By default, the services in the stack will expose the following TCP ports:
-* 5000: Logstash TCP input
+* 514:  Logstash Syslog input
+* 5000: Logstash TCP generic input
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana Web Frontend
@@ -37,14 +38,14 @@ The configuration is stored in:
   * `./docker-elk-compose/kibana/config/kibana.yml` 
   * `./docker-elk-compose/logstash/config/logstash.yml` 
 
-3. All done configuring? Well, now bring up the containers using `docker-compose up -d` standing in `./docker-elk-compose/`
+3. Bring up the containers using `docker-compose up -d` standing in `./docker-elk-compose/`
 
 ## Verify installation
 
 In order to verify, you can take the following steps:
 
-* `docker ps` should list the three containers; *_kibana, *_logstash and *_elasticsearch
-* `telnet localhost 5000`, `telnet localhost 5601`, `telnet localhost 9200`, `telnet localhost 9300` should all result in successful connections
+* `docker ps` should list the three containers; elk-kibana, elk-logstash and elk-elasticsearch
+* `telnet localhost 514`, `telnet localhost 5000`, `telnet localhost 5601`, `telnet localhost 9200`, `telnet localhost 9300` should all result in successful connections
 * Browsing to `http://localhost:5601/` should present you the Kibana frontend after a few minutes of initialization - [How to connect to Kibana][connect-kibana]
 
 ## Getting data into Elasticsearch index
@@ -65,6 +66,8 @@ $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
 
 > :information_source: Configuration isn't dynamically reloaded, you will have to restart individual components after you've made any configuration change.
 
+> :information_source: There's a default syslog listener enabled on TCP/UDP 514 (on host, 5514 in the container) - please note that you might need to reconfigure grok patterns, date/time formats and so on. Such edits are to be made in `./docker-elk-compose/logstash/pipeline/logstash.conf`. 
+
 > :information_source: Basic licensing is enabled by default. To change to full (trial), modify `./docker-elk-compose/elasticsearch/config/elasticsearch.yml` and replace  `basic` with `trial`.
 
 > :heavy_exclamation_mark: You have to run `docker-compose build` first if you switch branch version or update a base image.
@@ -81,11 +84,29 @@ elasticsearch:
   volumes:
     - /path/to/storage:/usr/share/elasticsearch/data
 ```
+This will store the Elasticsearch indexed data in `/path/to/storage` locally on the host.
 
-This will store the Elasticsearch indexed data in `/path/to/storage`.
+You might prefer to store the data persistently in a Docker volume:
+
+```yml
+elasticsearch:
+
+  volumes:
+    - elasticsearch_data:/usr/share/elasticsearch/data
+```
+
+Note that you in this case will need the following at the bottom of the docker-compose file as well:
+
+```yml
+volumes:
+  elasticsearch_data:
+```
+For further storage options, please see [the compose file volumes reference][docker-compose-doc-volumes]
+
 
 [elk-stack]: https://www.elastic.co/elk-stack
 [connect-kibana]: https://www.elastic.co/guide/en/kibana/current/connect-to-elasticsearch.html
 [config-elasticsearch]: ./elasticsearch/config/elasticsearch.yml
 [config-kibana]: ./kibana/config/kibana.yml
 [config-logstash]: ./logstash/config/logstash.yml
+[docker-compose-doc-volumes]: https://docs.docker.com/compose/compose-file/#volume-configuration-reference
