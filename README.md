@@ -1,6 +1,6 @@
 # Elastic stack (ELK) on Docker using Docker-Compose
 
-![Elastic Stack version 7.10.1](https://img.shields.io/badge/ELK-7.10.1-blue.svg?style=flat)
+![Elastic Stack version 8.5.3](https://img.shields.io/badge/ELK-8.5.3-blue.svg?style=flat)
 
 [Elastic ELK Stack][elk-stack] - [Elasticsearch](https://www.elastic.co/products/elasticsearch), [Logstash](https://www.elastic.co/products/logstash), and [Kibana](https://www.elastic.co/products/kibana) in one package. To be used by [Docker Compose](https://docs.docker.com/compose/). 
 
@@ -40,13 +40,19 @@ The configuration is stored in:
 
 3. Bring up the containers using `docker-compose up -d` standing in `./docker-elk-compose/`
 
+4. The password for `kibana` user as well as enrollment token for enrolling Kibana is automatically generated. To fetch these, you need to open the logs using `docker logs elasticsearch`.
+
+> :bulb: You might need to scroll up a bit in the logs to find the password and enrollment token
+
+> :heavy_exclamation_mark: The generated password and enrollment token will only be logged once at the first startup
+
 ## Verify installation
 
 In order to verify, you can take the following steps:
 
 * `docker ps` should list the three containers; elk-kibana, elk-logstash and elk-elasticsearch
 * `telnet localhost 514`, `telnet localhost 5000`, `telnet localhost 5601`, `telnet localhost 9200`, `telnet localhost 9300` should all result in successful connections
-* Browsing to `http://localhost:5601/` should present you the Kibana frontend after a few minutes of initialization - [How to connect to Kibana][connect-kibana]
+* Browsing to `http://localhost:5601/` should present you the Kibana frontend after a few minutes of initialization (using password and token fetched in step 4 above) - [How to connect to Kibana][connect-kibana]
 
 ## Getting data into Elasticsearch index
 
@@ -57,7 +63,7 @@ Then, you can create index from the Kibana front-end (by hitting the *Create* bu
 ```console
 $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
     -H 'Content-Type: application/json' \
-    -H 'kbn-version: 7.10.1' \
+    -H 'kbn-version: 8.5.3' \
     -u elastic:<your elastic password> \
     -d '{"attributes":{"title":"logstash-*","timeFieldName":"@timestamp"}}'
 ```
